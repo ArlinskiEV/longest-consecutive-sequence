@@ -5,20 +5,25 @@ module.exports = function longestConsecutiveLength(array) {
   let result = 0;
   
   for (let i = 0; i < array.length; i++) {
-                                                      //check current
-                                                      // if (!temp[array[i]]) {
-    temp[array[i]] = {length: {current: 1, id: i}};
-                                                      // } else {
-                                                      //   temp[array[i]].length.current += 1;
-                                                      // }
-    function check(a, b) {
-      if (!b) return 0;
-      b.length.current += a.length.current;
-      a.length = b.length;
-    };
+    temp[array[i]] = {length: {current: 1, idCurrent: array[i]}, idLength: array[i]};
 
-    check(temp[array[i]], temp[array[i] - 1]);
-    check(temp[array[i]], temp[array[i] + 1]);
+    //check left
+    if (temp[array[i] - 1]) {
+      temp[array[i] - 1].length.current += temp[array[i]].length.current;
+      temp[array[i]] = temp[array[i] - 1];
+    }
+
+    //check right
+    if (temp[array[i] + 1]) {
+      temp[array[i] + 1].length.current += temp[array[i]].length.current;
+      temp[array[i]] = temp[array[i] + 1];
+
+      //if in middle
+      // if (temp[array[i] - 1]) {
+      //   temp[array[i] - 1].length = temp[array[i]].length;
+      //   temp[array[i] - 1] = temp[array[i]];
+      // };
+    }
 
     if (result < temp[array[i]].length.current) result = temp[array[i]].length.current;
   }
